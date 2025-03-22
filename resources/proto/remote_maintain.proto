@@ -1,0 +1,165 @@
+syntax = "proto3";
+option go_package = ".;protos";
+
+package Longwall;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+message Empty {
+
+}
+
+// 应答报文
+message Reply {
+  int32					ErrorCode = 1;
+  string 				Message = 2;
+}
+
+message BurnSoftwareCodeRequest {
+  string SoftwareCode = 1;
+  string HardwareCode = 2;
+  string MAC = 3;
+}
+
+message BurnSoftwareCodeResponse {
+  int32  ErrorCode = 1;
+  string ErrorMessage = 2;
+}
+
+message QuerySoftCodeResponse {
+  string SoftwareCode = 1;
+  string HardwareCode = 2;
+  string MAC = 3;
+  int32  ErrorCode = 4;
+  string ErrorMessage = 5;
+}
+
+message GatewayAutoAddrRequest {
+    string BaseIP = 1;
+    int32  AddrDir = 2;
+    int32  HeadDir = 3;
+    int32  GatewayDir = 4;
+    int32  FirstAddr = 5;
+    int32  ScuNum = 6;
+    int32  HeaderNum = 7;
+    int32  TailNum = 8;
+}
+
+message BeginTestRequest {
+    uint32 DeviceType = 1;
+    uint32 Port = 2;
+    uint32 PortType = 3;
+    uint32 TestMode = 4;
+}
+
+message ClearTestRequest {
+    uint32 DeviceType = 1;
+    uint32 Port = 2;
+    uint32 PortType = 3;
+}
+
+message EndTestRequest {
+    uint32 DeviceType = 1;
+    uint32 Port = 2;
+    uint32 PortType = 3;
+}
+
+message QueryTestInfoRequest {
+    uint32 DeviceType = 1;
+    uint32 Port = 2;
+    uint32 PortType = 3;
+}
+
+message QueryTestInfoReply {
+    uint64 TotalRcv = 1;
+    uint64 TotalSend = 2;
+    uint32 RcvFlag = 3;
+    uint32  SendFlag = 4;
+    uint32  TestMode = 5;
+}
+
+message QueryFaultRequest{
+    uint32 DeviceType = 1;
+    uint32 Port = 2;
+    uint32 PortType = 3;
+}
+message QueryFaultRepl{
+    bool fault = 1;
+    bool flag = 2;
+}
+
+
+// 服务接口
+service RemoteMaintain {
+  rpc Reboot(Empty) returns (Empty) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/maintain/reboot"
+        body:"*"
+    };
+  }
+
+  rpc BurnSoftwareCode(BurnSoftwareCodeRequest) returns (BurnSoftwareCodeResponse) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/maintain/burnsoftwarecode"
+        body:"*"
+    };
+  }
+
+  rpc QuerySoftwareCode(Empty) returns (QuerySoftCodeResponse) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/maintain/querysoftwarecode"
+        body:"*"
+    };
+  }
+
+  rpc GatewayAutoAddr(GatewayAutoAddrRequest) returns (Reply) {
+      option (google.api.http) = {
+          post: "/zzmj/longwall/maintain/gatewayautoaddr"
+          body:"*"
+      };
+  }
+
+  rpc BeginTest(BeginTestRequest) returns (Reply) {
+        option (google.api.http) = {
+            post: "/zzmj/longwall/maintain/begintest"
+            body:"*"
+        };
+  }
+
+  rpc ClearTest(ClearTestRequest) returns (Reply) {
+        option (google.api.http) = {
+              post: "/zzmj/longwall/maintain/cleartest"
+              body:"*"
+        };
+  }
+
+  rpc QueryTestInfo(QueryTestInfoRequest) returns (QueryTestInfoReply) {
+        option (google.api.http) = {
+              post: "/zzmj/longwall/maintain/querytestinfo"
+              body:"*"
+        };
+  }
+
+  rpc EndTest(EndTestRequest) returns (Reply) {
+        option (google.api.http) = {
+            post: "/zzmj/longwall/maintain/endtest"
+            body:"*"
+        };
+  }
+
+  rpc FaultRes(QueryFaultRequest) returns (QueryFaultRepl) {
+        option (google.api.http) = {
+            post: "/zzmj/longwall/maintain/faultres"
+            body:"*"
+        };
+  }
+
+  rpc QueryFaultInfo(QueryFaultRequest) returns (QueryFaultRepl) {
+        option (google.api.http) = {
+            post: "/zzmj/longwall/maintain/queryfaultinfo"
+            body:"*"
+        };
+  }
+
+}

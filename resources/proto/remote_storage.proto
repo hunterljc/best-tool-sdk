@@ -1,0 +1,109 @@
+syntax = "proto3";
+option go_package = ".;protos";
+
+package Longwall;
+ 
+import "google/api/annotations.proto";
+import "remote_maintain.proto";
+
+message Key {
+  string Key = 1;
+  bool   Shared = 2;
+}
+
+// 应答报文
+message Reply {
+  int32					ErrorCode = 1;
+  string 				Message = 2;
+}
+
+message Value {
+  int32 ErrorCode = 1;
+  string Key = 2;
+  string Value = 3;
+}
+
+message ValueList {
+  int32 ErrorCode = 1;
+  repeated Value KValues = 2;
+}
+
+message KeyValue {
+  string Key = 1;
+  string Value = 2;
+  int64  leaseID = 3;
+  bool   Shared = 4;
+}
+
+message LeaseInfo {
+    int64 TTL = 1;
+    bool Shared = 2;
+}
+
+message LeaseID {
+    int64 ID = 1;
+    bool Shared = 2;
+}
+
+message LeaseIDReply {
+    int32 ErrorCode = 1;
+    int64 ID = 2;
+}
+
+service Storage {
+  rpc Exists(Key) returns (Reply) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/storage/exists"
+        body:"*"
+    };
+  }
+
+  rpc Get(Key) returns (Value) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/storage/get"
+        body:"*"
+    };
+  }
+
+  rpc Put(KeyValue) returns (Reply) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/storage/set"
+        body:"*"
+    };
+  }
+
+  rpc Delete(Key) returns (Reply) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/storage/delete"
+        body:"*"
+    };
+  }
+
+  rpc List(Key) returns (ValueList) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/storage/list"
+        body:"*"
+    };
+  }
+
+  rpc GrantLease(LeaseInfo) returns(LeaseIDReply) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/storage/grantlease"
+        body:"*"
+    }; 
+  }
+
+  rpc KeepAlive(LeaseID) returns(LeaseIDReply) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/storage/keepalive"
+        body:"*"
+    }; 
+  }
+
+  rpc Revoke(LeaseID) returns(LeaseIDReply) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/storage/revoke"
+        body:"*"
+    }; 
+  }
+}

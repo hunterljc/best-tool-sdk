@@ -1,0 +1,71 @@
+syntax = "proto3";
+option go_package = ".;protos";
+
+package Longwall;
+
+import "google/api/annotations.proto";
+import "remote_maintain.proto";
+
+
+// 应答报文
+message Reply {
+    int32 ErrorCode = 1;
+    string Message = 2;
+}
+
+message GetParamRequest {
+    string Model = 1;      // 模型名称
+    string Property = 2;   // 属性名称
+}
+
+message GetParamReply {
+    string Model = 1;      // 模型名称
+    string Property = 2;   // 属性名称
+    string Value = 3;      // 模型内容
+}
+
+message SetParamRequest {
+    string Model = 1;      // 模型名称
+    string Property = 2;   // 属性名称
+    string Value = 3;      // 模型内容
+}
+
+message GetParamsRequest{
+	repeated GetParamRequest Req = 1;
+}
+
+message GetParamsReply{
+	repeated GetParamReply Rep = 1;
+}
+
+message SetParamsRequest{
+	repeated SetParamRequest Req = 1;
+}
+
+service RemoteScuParam {
+	  rpc GetParam(GetParamRequest) returns (GetParamReply) {
+        option (google.api.http) = {
+            post: "/zzmj/longwall/scu/getparam"
+            body: "*"
+        };
+      }
+	  rpc SetParam(SetParamRequest) returns (Reply) {
+        option (google.api.http) = {
+            post: "/zzmj/longwall/scu/setparam"
+            body: "*"
+        };
+      }
+
+	  rpc GetParams(GetParamsRequest) returns (GetParamsReply) {
+        option (google.api.http) = {
+            post: "/zzmj/longwall/scu/getparams"
+            body: "*"
+        };
+      }
+	  rpc SetParams(SetParamsRequest) returns (Reply) {
+        option (google.api.http) = {
+            post: "/zzmj/longwall/scu/setparams"
+            body: "*"
+        };
+      }
+}

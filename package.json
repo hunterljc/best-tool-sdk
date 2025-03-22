@@ -1,0 +1,22 @@
+{
+  "name": "sdk-best-tool",
+  "version": "1.0.0",
+  "description": "main + sdk + global_type + worker",
+  "author": "-",
+  "files": [
+    "common",
+    "main",
+    "preload",
+    "types",
+    "resources",
+    "adapt_SDK.js"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "scripts": {
+    "p": "npm publish"
+  },
+  "keywords": [],
+  "license": ""
+}

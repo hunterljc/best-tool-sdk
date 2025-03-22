@@ -1,0 +1,128 @@
+syntax = "proto3";
+option go_package = ".;protos";
+
+package Longwall;
+
+import "google/api/annotations.proto";
+import "remote_maintain.proto";
+
+message FileRequest {
+  string SrcPath = 1;
+  string DestPath = 2;
+}
+
+message FileList {
+  repeated string FilePaths = 1;
+}
+
+message FilePath {
+  string FilePath = 1;
+  int32  FileMode = 2;
+}
+
+message FileHandle {
+  int32 Handle = 1;
+}
+
+message FileInfo {
+  int64  FileSize = 1;
+  string MD5 = 2;
+}
+
+message FileBuffer {
+    int32 Handle = 1;
+    bytes Buffer = 2;
+    int32 Size = 3;
+    bool EOF = 4;
+}
+
+message ACK {
+    int32  ErrorCode = 1;
+    string ErrorMessage = 2;
+    int32  Len = 3;
+}
+
+// 应答报文
+message Reply {
+  int32					ErrorCode = 1;
+  string 				Message = 2;
+}
+
+service RemoteFile {
+  rpc Mkdir(FilePath) returns (Reply) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/maintain/mkdir"
+        body:"*"
+    };
+  }
+
+  rpc LS(FilePath) returns (FileList) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/maintain/ls"
+        body:"*"
+    };
+  }
+
+  rpc Remove(FilePath) returns (Reply) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/maintain/remove"
+        body:"*"
+    };
+  }
+
+  rpc Copy(FileRequest) returns (Reply) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/maintain/copy"
+        body:"*"
+    };
+  }
+
+  rpc Unzip(FileRequest) returns (Reply) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/maintain/unzip"
+        body:"*"
+    };
+  }
+
+  rpc Zip(FileRequest) returns (Reply) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/maintain/zip"
+        body:"*"
+    };
+  }
+
+  rpc GetFileInfo(FilePath) returns (FileInfo) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/maintain/getfileinfo"
+        body:"*"
+    };
+  }
+
+  rpc Open(FilePath) returns (FileHandle) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/maintain/open"
+        body:"*"
+    };
+  }
+
+  rpc Read(FileHandle) returns (FileBuffer) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/maintain/read"
+        body:"*"
+    };
+  }
+
+  rpc Write(FileBuffer) returns (ACK) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/maintain/write"
+        body:"*"
+    };
+  }
+
+  rpc Close(FileHandle) returns (Reply) {
+    option (google.api.http) = {
+        post: "/zzmj/longwall/maintain/close"
+        body:"*"
+    };
+  }
+}

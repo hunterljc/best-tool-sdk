@@ -1,0 +1,54 @@
+syntax = "proto3";
+option go_package = ".;protos";
+
+package Longwall;
+ 
+import "google/api/annotations.proto";
+import "remote_maintain.proto";
+
+// 应答报文
+message Reply {
+  int32	 ErrorCode = 1;
+  string Message = 2;
+}
+
+message RemoteUpgradeInfo {
+    int32 DeviceType = 1;
+    int32 MaintainType = 2;
+    int32 TotalSize = 3;
+    int32 MaintainAll = 4;
+    int32 SrcID = 5;
+}
+
+message RemoteUpgradeHandle {
+    int32 Handle = 1;
+}
+
+message RemoteUpgradeRequest {
+    int32 Handle = 1;
+    bytes Buffer = 2;
+    int32 Size = 3;
+}
+
+service RemoteUpgrade {
+    rpc UpgradeBegin(RemoteUpgradeInfo) returns (RemoteUpgradeHandle) {
+        option (google.api.http) = {
+            post: "/zzmj/longwall/maintain/upgrade/begin"
+            body:"*"
+        };
+    }
+
+    rpc Upgrade(RemoteUpgradeRequest) returns (Reply) {
+        option (google.api.http) = {
+            post: "/zzmj/longwall/maintain/upgrade"
+            body:"*"
+        };
+    }
+
+    rpc UpgradeEnd(RemoteUpgradeHandle) returns (Reply) {
+        option (google.api.http) = {
+            post: "/zzmj/longwall/maintain/upgrade/end"
+            body:"*"
+        };
+    }
+}
