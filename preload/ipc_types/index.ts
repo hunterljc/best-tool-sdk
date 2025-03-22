@@ -1,4 +1,4 @@
-import { WindowIpc } from "./windowIpc.type";
+// import { WindowIpc } from "./windowIpc.type";
 import { DialogIpc } from "./dialogIpc.type";
 import { FsIpc } from "./fsIpc.type";
 import { DownloadIpc } from "./downloadIpc.type";
@@ -29,7 +29,7 @@ import { ICoap2Ipc } from "./coap2.type";
 
 export type IApi = {
   app: AppIpc;
-  wind: WindowIpc;
+  // wind: WindowIpc;
   dialog: DialogIpc;
   download: DownloadIpc;
   buffer: BufferIpc;

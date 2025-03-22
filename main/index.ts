@@ -1,4 +1,4 @@
-import { registerWindowManagerService } from "./window";
+// import { registerWindowManagerService } from "./window";
 import { registerDialogService } from "./dialog";
 import { registerSystemService } from "./system";
 import { registerDownloadService } from "./download";
@@ -18,7 +18,7 @@ import { registerBufferWorkService } from "./buffer";
 // import { registerJfrogService } from "./jfrog";
 
 const registerSDKMainListenerEvent = () => {
-  registerWindowManagerService();
+  // registerWindowManagerService();
   registerDialogService();
   registerSystemService();
   registerDownloadService();

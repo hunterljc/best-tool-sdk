@@ -1,7 +1,7 @@
 import { IApi } from "./ipc_types";
 
 import dialogIpc from "./ipcs/dialog.ipc";
-import windowIpc from "./ipcs/window.ipc";
+// import windowIpc from "./ipcs/window.ipc";
 import fsIpc from "./ipcs/fs.ipc";
 import downloadIpc from "./ipcs/download.ipc";
 import cryptoIpc from "./ipcs/crypto.preload";
@@ -31,7 +31,7 @@ import processIpc from "./ipcs/process.preload";
 
 export const api: IApi = {
   app: appIpc,
-  wind: windowIpc,
+  // wind: windowIpc,
   dialog: dialogIpc,
   download: downloadIpc,
   buffer: bufferIpc,
